@@ -11,7 +11,7 @@ p = args[1]
 type = args[2]
 if_weak = args[3]
 
-source("simulation.R")
+source("core/simulation.R")
 simulation(p, type, if_weak)
 
 ## The following code collects results needed to generate figure 1/2/5/6/7
