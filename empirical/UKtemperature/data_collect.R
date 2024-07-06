@@ -45,3 +45,53 @@ for (i in 1:22){
 }
 
 temp22 = aperm(temp22, c(3,2,1))
+
+Y_temp = temp22
+Tu = dim(Y_temp)[3]
+n =dim(Y_temp)[1]
+d = dim(Y_temp)[2]
+
+if (Tu !=1){
+  u = (0:(Tu-1)) / Tu # (1:Tu)/Tu #
+}
+phi <- cbind(
+  rep(1, Tu) ,
+  sqrt(2) * sin(2 * pi * u),
+  sqrt(2) * cos(2 * pi * u),
+  sqrt(2) * sin(4 * pi * u),
+  sqrt(2) * cos(4 * pi * u),
+  sqrt(2) * sin(6 * pi * u),
+  sqrt(2) * cos(6 * pi * u),
+  sqrt(2) * sin(8 * pi * u),
+  sqrt(2) * cos(8 * pi * u),
+  sqrt(2) * sin(10 * pi * u)
+  # sqrt(2) * cos(10 * pi * u),
+  # sqrt(2) * sin(12 * pi * u),
+  # sqrt(2) * cos(12 * pi * u),
+  # sqrt(2) * sin(14 * pi * u),
+  # sqrt(2) * cos(14 * pi * u),
+  # sqrt(2) * sin(16 * pi * u),
+  # sqrt(2) * cos(16 * pi * u),
+  # sqrt(2) * sin(18 * pi * u),
+  # sqrt(2) * cos(18 * pi * u),
+  # sqrt(2) * sin(20 * pi * u),
+  # sqrt(2) * cos(20 * pi * u),
+  # sqrt(2) * sin(22 * pi * u),
+  # sqrt(2) * cos(22 * pi * u)
+  
+) 
+
+trunc = 4
+Ysmooth = array(dim  = c(n,d,Tu))
+for (l in 1:n){
+  for (k in 1:d){
+    Y = Y_temp[l,k,]
+    X = phi[,1:trunc]
+    S = X%*%solve(t(X)%*%X)%*%t(X)
+    Yest = S%*%Y
+    Ysmooth[l,k,] = Yest
+  }
+  
+}
+temp22.sm10 = Ysmooth
+save(temp22, temp22.sm10, file = "temperature.RData",version = 2)
