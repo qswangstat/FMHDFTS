@@ -51,8 +51,37 @@ data_gen_1 = function(n, p, r, s, A, varMat, bmat, delta = 1, q = 0.75,
   }
   return(data)
 }
-# independent factor
+# heterogeneous idiosyncratic terms
 data_gen_2 = function(n, p, r, s, A, varMat, bmat, delta = 1, q = 0.75,
+                    sigma = 1, errdim = 20, err_ar_coef = 0.5, burn = 1000){
+  coefMat = matrix(0, nrow = r*s, ncol = 2*n + burn)
+  for (i in 1:s) {
+    coefMat_i = matrix(0, nrow = r, ncol = 2*n + burn)
+    coefMat_i[, 1] = runif(r, -1, 1)
+    for(j in 2:ncol(coefMat_i)){
+      coefMat_i[, j] = varMat %*% coefMat_i[, j-1] + rnorm(r, 0, sigma*i^(-q))
+    }
+    coefMat[((i-1)*r+1):(i*r), ] = coefMat_i
+  }
+  coefMat = coefMat[, -(1:burn)]
+  
+  data = array(0, dim = c(p, dim(bmat)[2], n))
+  facto = array(0, dim = c(r, dim(bmat)[2], n))
+  for (i in 1:(n)) {
+    coefi = matrix(coefMat[, i], nrow = r, ncol = s)
+    xn = coefi %*% bmat[1:s, ]
+    facto[ , , i] = xn
+    ### construct error process
+    epscoef = matrix(rnorm(p*errdim, 0, 1), nrow = p, ncol = errdim)
+    epscoef = t(t(epscoef) * 1/2^((1:errdim)+1))
+    epsn = epscoef %*% bmat[1:errdim, ]
+    epsn = diag(sample(1:10, p, replace = TRUE)) %*% epsn / 5
+    data[, , i] = A %*% xn * delta + epsn
+  }
+  return(data)
+}
+# independent factor
+data_gen_3 = function(n, p, r, s, A, varMat, bmat, delta = 1, q = 0.75,
                     sigma = 1, errdim = 20, err_ar_coef = 0.5, burn = 1000){
   coefMat = matrix(0, nrow = r*s, ncol = 2*n + burn)
   for (i in 1:s) {
@@ -78,35 +107,6 @@ data_gen_2 = function(n, p, r, s, A, varMat, bmat, delta = 1, q = 0.75,
     epsn2 = t(as.vector(rnorm(4, 0, 1))) %*% bmat[1:4, ] * delta
     
     data[, , i] = t(t(A %*% xn + epsn)+as.vector(epsn2))
-  }
-  return(data)
-}
-# heterogeneous idiosyncratic terms
-data_gen_3 = function(n, p, r, s, A, varMat, bmat, delta = 1, q = 0.75,
-                    sigma = 1, errdim = 20, err_ar_coef = 0.5, burn = 1000){
-  coefMat = matrix(0, nrow = r*s, ncol = 2*n + burn)
-  for (i in 1:s) {
-    coefMat_i = matrix(0, nrow = r, ncol = 2*n + burn)
-    coefMat_i[, 1] = runif(r, -1, 1)
-    for(j in 2:ncol(coefMat_i)){
-      coefMat_i[, j] = varMat %*% coefMat_i[, j-1] + rnorm(r, 0, sigma*i^(-q))
-    }
-    coefMat[((i-1)*r+1):(i*r), ] = coefMat_i
-  }
-  coefMat = coefMat[, -(1:burn)]
-  
-  data = array(0, dim = c(p, dim(bmat)[2], n))
-  facto = array(0, dim = c(r, dim(bmat)[2], n))
-  for (i in 1:(n)) {
-    coefi = matrix(coefMat[, i], nrow = r, ncol = s)
-    xn = coefi %*% bmat[1:s, ]
-    facto[ , , i] = xn
-    ### construct error process
-    epscoef = matrix(rnorm(p*errdim, 0, 1), nrow = p, ncol = errdim)
-    epscoef = t(t(epscoef) * 1/2^((1:errdim)+1))
-    epsn = epscoef %*% bmat[1:errdim, ]
-    epsn = diag(sample(1:10, p, replace = TRUE)) %*% epsn / 5
-    data[, , i] = A %*% xn * delta + epsn
   }
   return(data)
 }
