@@ -1,0 +1,5 @@
+- lag_cov_new.R: functions for estimating factor model
+- mortality_func.R: functions for predicting mortality 
+- mortality_predict_final.R: as the name indicates
+- mortality_sum.R: calculate MSFE or MAFE
+- mortality.RData: pre-processed data
