@@ -1,5 +1,5 @@
+## generate figure 1/2/5/6/7
 library(foreach)
-#####################################################################
 plot_prob = function(p, type, if_weak){
   linet = c(2,4,1)
   color = c('red', 'cyan', 'black')
