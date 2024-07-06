@@ -19,6 +19,7 @@ simulation(p, type, if_weak)
 # for(type in 1:5){
 #     p_seq = c(50,100,200)
 #     w_seq = c(0,1)
+#     if(type == 3) {w_seq=c(0)}
 #     if(type == 5) {p_seq = c(100) w_seq=c(0)}
 #     for(p in p_seq){
 #         for(if_weak in w_seq){
