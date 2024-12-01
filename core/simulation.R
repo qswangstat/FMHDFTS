@@ -2,8 +2,7 @@ library(foreach)
 library(doSNOW)
 library(doRNG)
 source('../utils/data_generate.R')
-source('../utils/lag_covariance_estimate.R')
-source('../utils/space_estimation_accuracy.R')
+
 simulation = function(p=100, type=1, if_weak=0, ncol.Q=12, k0=4,
                       if_verify=False) {
     set.seed(2020)
@@ -54,10 +53,12 @@ simulation = function(p=100, type=1, if_weak=0, ncol.Q=12, k0=4,
       registerDoSNOW(clus)
       result = foreach(j = 1:sim, .combine = 'rbind') %dorng% {
         cat("Simualtion", j, '\n')
+        source('../utils/lag_covariance_estimate.R')
+        source('../utils/space_estimation_accuracy.R')
         Qmat = matrix(runif(p*ncol.Q, -1, 1), nrow = p, ncol = ncol.Q) 
         y = data_gen(n, p, r, s, A, varMat, bmat, 
                      delta = delta,  err_ar_coef = 0.5,
-                     serial_depend = 0.5, q = 0.75, 
+                     cross_depend = 0.5, q = 0.75, 
                      sigma = 1, errdim = 20, burn = 1000)
         
         mMatArr1 = lag_cov_prod_int(y, h, k0)
