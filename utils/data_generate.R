@@ -19,7 +19,8 @@
 # err_ar_coef: in scenario 4-5, I consider serial dependence for idiosyncratic terms controlled by this param
 # cross_depend: in scenario 5, I consider cross-correlation among p-dim idiosyncratic terms controlled by this param
 data_gen_1 = function(n, p, r, s, A, varMat, bmat, delta = 1, q = 0.75,
-                    sigma = 1, errdim = 20, err_ar_coef = 0.5, burn = 1000){
+                    sigma = 1, errdim = 20, err_ar_coef = 0.5, burn = 1000,
+                    cross_depend = 0.25){
   ### factor process x_t(u) is r-dim
   ### each component is expanded under s basis
   ### first generate expansion coefficient
@@ -53,7 +54,8 @@ data_gen_1 = function(n, p, r, s, A, varMat, bmat, delta = 1, q = 0.75,
 }
 # heterogeneous idiosyncratic terms
 data_gen_2 = function(n, p, r, s, A, varMat, bmat, delta = 1, q = 0.75,
-                    sigma = 1, errdim = 20, err_ar_coef = 0.5, burn = 1000){
+                    sigma = 1, errdim = 20, err_ar_coef = 0.5, burn = 1000,
+                    cross_depend = 0.25){
   coefMat = matrix(0, nrow = r*s, ncol = 2*n + burn)
   for (i in 1:s) {
     coefMat_i = matrix(0, nrow = r, ncol = 2*n + burn)
@@ -82,7 +84,8 @@ data_gen_2 = function(n, p, r, s, A, varMat, bmat, delta = 1, q = 0.75,
 }
 # independent factor
 data_gen_3 = function(n, p, r, s, A, varMat, bmat, delta = 1, q = 0.75,
-                    sigma = 1, errdim = 20, err_ar_coef = 0.5, burn = 1000){
+                    sigma = 1, errdim = 20, err_ar_coef = 0.5, burn = 1000,
+                    cross_depend = 0.25){
   coefMat = matrix(0, nrow = r*s, ncol = 2*n + burn)
   for (i in 1:s) {
     coefMat_i = matrix(0, nrow = r, ncol = 2*n + burn)
