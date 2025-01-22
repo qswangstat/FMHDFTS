@@ -79,5 +79,5 @@ for(sex in 1:2){
   data.test  = data[,,-(n0:n.train)]
   cat(filename, '\n')
   
-  save(elapse, data.train,data.test,res_final, file = paste('revision/', filename, sep=''))
+  save(elapse, data.train,data.test,res_final, file = paste('./', filename, sep=''))
 }
