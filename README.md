@@ -32,5 +32,5 @@ Once you finish, you should turn to **utils/visualization** where three files co
 ## Empirical
 For UK temperature data, **empirical/UKtemperature/data_collect.R** is code for data collection and **empirical/UKtemperature/plot_loading_uk.R** is for Figure 3.
 
-For Japanese mortality data, **empirical/JapanMortality/plot_loading_japan.R** is for Figure 4/9, while **empirical/JapanMortality/mortality_predict_final.R** contains all code to compare various methods for forecasting, i.e. Table 2.
+For Japanese mortality data, **empirical/JapanMortality/plot_loading_japan.R** is for Figure 4/9, while **empirical/JapanMortality/mortality_predict_final.R** contains all code to compare various methods for forecasting. You should run this script first and you will obtain 6 different ``.RData'' files. After that, you should run  **empirical/JapanMortality/mortality_sum.R** to generate the results of Table 2.
 
